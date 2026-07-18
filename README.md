@@ -150,12 +150,25 @@ py -3.13 -m http.server 8080
 Expected output:
 Serving HTTP on :: port 8080 (http://localhost:8080/)
 
-### Access Application
+## Deployed Link
 
-Open browser and go to:
-http://localhost:8080
+**Live Demo**: https://unfeeble-unascendable-kimberly.ngrok-free.dev
 
-You should see the **purple chat interface** with the header "🏟️ Stadium Navigator"
+### Important
+This link is active only when the application is running locally.
+To access the demo:
+1. All 4 terminals must be running (see "Running the Application" section)
+2. Link will be active during submission testing window
+3. If link doesn't work, refresh page (ngrok sometimes needs 5-10 seconds to reconnect)
+
+### For Judges
+If the link is down, you can also run locally:
+```bash
+ollama serve
+py -3.13 backend/main.py
+cd frontend && py -3.13 -m http.server 8080
+```
+Visit: http://localhost:8080
 
 ---
 
