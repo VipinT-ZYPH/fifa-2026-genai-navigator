@@ -1,7 +1,7 @@
 # FastAPI backend server
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
+import os
 from ai_handler import generate_response
 
 app = FastAPI(title="FIFA 2026 Stadium Navigator")
@@ -15,23 +15,21 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-class QueryRequest(BaseModel):
-    query: str
-    user_location: str = "Main Gate"
-    accessibility_needs: str = "None"
-
 @app.post("/chat")
-async def chat(request: QueryRequest):
+async def chat(request: dict):
     """Main chat endpoint"""
     try:
-        response = generate_response(
-            request.query,
-            request.user_location,
-            request.accessibility_needs
-        )
+        query = request.get("query", "").strip()
+        user_location = request.get("user_location", "Main Gate").strip()
+        accessibility_needs = request.get("accessibility_needs", "None").strip()
+        
+        if not query:
+            raise HTTPException(status_code=400, detail="Query cannot be empty")
+        
+        response = generate_response(query, user_location, accessibility_needs)
         return response
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        return {"error": str(e), "response": "Error processing request"}
 
 @app.get("/status")
 async def status():
@@ -44,6 +42,6 @@ async def status():
 
 if __name__ == "__main__":
     import uvicorn
+    port = int(os.getenv("PORT", 8000))
     print("🏟️  Starting FIFA Stadium Navigator Backend...")
-    print("Make sure Ollama is running: ollama serve")
-    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=False)
+    uvicorn.run(app, host="0.0.0.0", port=port)

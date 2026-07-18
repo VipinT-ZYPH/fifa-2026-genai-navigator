@@ -53,17 +53,12 @@ STADIUM_DATA = {
 def get_closest_facility(zone: str, facility_type: str) -> Dict:
     """Get closest facility of given type to user's zone"""
     facilities = STADIUM_DATA["facilities"].get(facility_type, [])
-
-    if not facilities:
-        return None
-
-    # Prefer accessible facilities for bathrooms
+    
     if facility_type == "bathrooms":
         accessible = [f for f in facilities if f.get("accessible", False)]
         return accessible[0] if accessible else facilities[0]
-
-    return facilities[0]
-
+    
+    return facilities[0] if facilities else None
 
 def get_crowd_status() -> Dict:
     """Get current crowd density in each zone"""
