@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FIFA 2026 Stadium Navigator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 600px;
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 5px;
+        }
+        
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .chat-container {
+            height: 400px;
+            overflow-y: auto;
+            padding: 20px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .message {
+            margin-bottom: 15px;
+            display: flex;
+            animation: slideIn 0.3s ease-in-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .user-msg {
+            justify-content: flex-end;
+        }
+        
+        .bot-msg {
+            justify-content: flex-start;
+        }
+        
+        .msg-content {
+            max-width: 80%;
+            padding: 12px 15px;
+            border-radius: 10px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        
+        .user-msg .msg-content {
+            background: #667eea;
+            color: white;
+            border-bottom-right-radius: 3px;
+        }
+        
+        .bot-msg .msg-content {
+            background: #e0e0e0;
+            color: #333;
+            border-bottom-left-radius: 3px;
+        }
+        
+        .input-section {
+            padding: 20px;
+            background: white;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        
+        select, input[type="text"] {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+        }
+        
+        input[type="text"]:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .input-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        
+        .input-row .form-group {
+            margin-bottom: 0;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 10px;
+        }
+        
+        button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        #sendBtn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        #sendBtn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        #sendBtn:active {
+            transform: translateY(0);
+        }
+        
+        #clearBtn {
+            background: #f0f0f0;
+            color: #333;
+        }
+        
+        #clearBtn:hover {
+            background: #e0e0e0;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 10px;
+            color: #667eea;
+            font-size: 14px;
+        }
+        
+        .loading.active {
+            display: block;
+        }
+        
+        .spinner {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border: 2px solid #667eea;
+            border-top: 2px solid transparent;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-right: 5px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .error {
+            color: #d32f2f;
+            padding: 10px 15px;
+            background: #ffebee;
+            border-radius: 8px;
+            font-size: 13px;
+            margin-bottom: 15px;
+        }
+        
+        .info {
+            background: #f0f0f0;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            color: #666;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏟️ Stadium Navigator</h1>
+            <p>FIFA 2026 - Your AI Guide</p>
+        </div>
+        
+        <div class="chat-container" id="chatContainer">
+            <div class="message bot-msg">
+                <div class="msg-content">
+                    Welcome! I'm your stadium assistant. Tell me where you are and what you need help with!
+                </div>
+            </div>
+        </div>
+        
+        <div id="loadingDiv" class="loading">
+            <span class="spinner"></span>Finding best route...
+        </div>
+        
+        <div class="input-section">
+            <div id="errorDiv" class="error" style="display: none;"></div>
+            
+            <div class="form-group">
+                <label for="queryInput">Your Question</label>
+                <input 
+                    type="text" 
+                    id="queryInput" 
+                    placeholder="e.g., Where's the nearest bathroom from Gate A1?"
+                    onkeypress="handleEnter(event)"
+                >
+            </div>
+            
+            <div class="input-row">
+                <div class="form-group">
+                    <label for="locationSelect">Your Location</label>
+                    <select id="locationSelect">
+                        <option value="Main Gate">Main Gate</option>
+                        <option value="Gate A1">Gate A1</option>
+                        <option value="Gate B2">Gate B2</option>
+                        <option value="Gate C1">Gate C1</option>
+                        <option value="Gate D1">Gate D1</option>
+                        <option value="North Stand">North Stand</option>
+                        <option value="South Stand">South Stand</option>
+                        <option value="East Stand">East Stand</option>
+                        <option value="West Stand">West Stand</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="accessibilitySelect">Accessibility Needs</label>
+                    <select id="accessibilitySelect">
+                        <option value="None">None</option>
+                        <option value="Wheelchair">Wheelchair</option>
+                        <option value="Mobility Aid">Mobility Aid</option>
+                        <option value="Visual Impairment">Visual Impairment</option>
+                        <option value="Hearing Impairment">Hearing Impairment</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="button-group">
+                <button id="sendBtn" onclick="sendMessage()">Send</button>
+                <button id="clearBtn" onclick="clearChat()">Clear</button>
+            </div>
+            
+            <div class="info">
+                💡 Tip: Be specific! E.g., "I'm disabled, need accessible bathroom from Zone B"
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = "http://localhost:8000";
+        
+        function hideError() {
+            document.getElementById("errorDiv").style.display = "none";
+        }
+        
+        function showError(message) {
+            const errorDiv = document.getElementById("errorDiv");
+            errorDiv.textContent = message;
+            errorDiv.style.display = "block";
+            setTimeout(hideError, 5000);
+        }
+        
+        async function sendMessage() {
+            const query = document.getElementById("queryInput").value.trim();
+            const location = document.getElementById("locationSelect").value;
+            const accessibility = document.getElementById("accessibilitySelect").value;
+            
+            if (!query) {
+                showError("Please enter a question!");
+                return;
+            }
+            
+            addMessage(query, "user");
+            document.getElementById("queryInput").value = "";
+            
+            document.getElementById("loadingDiv").classList.add("active");
+            
+            try {
+                const response = await fetch(`${API_URL}/chat`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        query: query,
+                        user_location: location,
+                        accessibility_needs: accessibility
+                    })
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`Server error: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                addMessage(data.response, "bot");
+                
+            } catch (error) {
+                console.error("Error:", error);
+                addMessage(
+                    "❌ Connection error. Make sure backend is running: py -3.13 backend/main.py",
+                    "bot"
+                );
+            } finally {
+                document.getElementById("loadingDiv").classList.remove("active");
+            }
+        }
+        
+        function addMessage(text, sender) {
+            const chatContainer = document.getElementById("chatContainer");
+            const messageDiv = document.createElement("div");
+            messageDiv.className = `message ${sender === "user" ? "user-msg" : "bot-msg"}`;
+            
+            const contentDiv = document.createElement("div");
+            contentDiv.className = "msg-content";
+            contentDiv.textContent = text;
+            
+            messageDiv.appendChild(contentDiv);
+            chatContainer.appendChild(messageDiv);
+            
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+        
+        function clearChat() {
+            const chatContainer = document.getElementById("chatContainer");
+            chatContainer.innerHTML = `
+                <div class="message bot-msg">
+                    <div class="msg-content">
+                        Chat cleared! Ready to help again. 👋
+                    </div>
+                </div>
+            `;
+            document.getElementById("queryInput").value = "";
+            hideError();
+        }
+        
+        function handleEnter(event) {
+            if (event.key === "Enter" && !event.shiftKey) {
+                event.preventDefault();
+                sendMessage();
+            }
+        }
+        
+        window.addEventListener("load", async () => {
+            try {
+                const response = await fetch(`${API_URL}/status`);
+                if (!response.ok) throw new Error("API not available");
+            } catch {
+                showError("⚠️ Backend not running. Start it with: py -3.13 backend/main.py");
+            }
+        });
+    </script>
+</body>
+</html>
