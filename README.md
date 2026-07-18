@@ -1,6 +1,6 @@
 # FIFA 2026 GenAI Stadium Navigator
 
-🏟️ **AI-Powered Real-time Navigation & Accessibility Assistant for Stadium Operations**
+**AI-Powered Real-time Navigation & Accessibility Assistant for Stadium Operations**
 
 ---
 
@@ -160,6 +160,7 @@ You should see the **purple chat interface** with the header "🏟️ Stadium Na
 ---
 
 ## Project Structure
+```text
 fifa-2026-genai-navigator/
 │
 ├── backend/
@@ -174,7 +175,7 @@ fifa-2026-genai-navigator/
 ├── README.md                   # This file
 ├── .gitignore                  # Git configuration
 └── (Single branch: main)
-
+```
 ### File Descriptions
 
 **`backend/main.py`** (67 lines)
@@ -310,51 +311,6 @@ Expected: Multi-part response addressing all constraints
 
 ---
 
-## Code Quality Features
-
-### ✅ Modularity
-- Separate files for concerns: AI, data, API
-- Clear function responsibilities
-- Easy to extend or modify
-
-### ✅ Readability
-- Descriptive variable names
-- Commented code sections
-- Type hints in function signatures
-- Consistent formatting
-
-### ✅ Error Handling
-- Try-catch blocks for API calls
-- Graceful fallback if Ollama unavailable
-- User-friendly error messages
-- Validation of input data
-
-### ✅ Security
-- No hardcoded API keys or secrets
-- Input validation on queries
-- CORS properly configured
-- No sensitive data in logs
-
-### ✅ Efficiency
-- In-memory stadium data (fast lookups)
-- Single Ollama instance (resource efficient)
-- Asynchronous API endpoints
-- Minimal dependencies (only 3: FastAPI, Uvicorn, Requests)
-
-### ✅ Testing
-- Multiple test scenarios provided
-- Clear expected outputs documented
-- Easy to add new test cases
-- Reproducible locally
-
-### ✅ Accessibility
-- Mobile-responsive interface
-- High contrast purple/white design
-- Keyboard navigation support
-- Clear, readable fonts
-- Focus indicators on inputs
-
----
 
 ## Troubleshooting
 
@@ -415,59 +371,6 @@ ollama list
 
 ---
 
-## Evaluation Alignment
-
-### High Impact: Problem Statement ⭐⭐⭐⭐⭐
-- ✅ Clearly solves fan navigation challenge
-- ✅ Addresses accessibility as primary concern
-- ✅ Contextual awareness (location + needs + accessibility)
-- ✅ Real-world applicable to large venues
-
-### High Impact: Code Quality ⭐⭐⭐⭐⭐
-- ✅ Clean, modular architecture
-- ✅ Readable variable and function names
-- ✅ Proper separation of concerns
-- ✅ Well-documented functions
-
-### Medium Impact: Security ⭐⭐⭐⭐
-- ✅ No hardcoded secrets
-- ✅ Input validation
-- ✅ CORS properly configured
-- ✅ Safe error messages (no stack traces)
-
-### Medium Impact: Efficiency ⭐⭐⭐⭐
-- ✅ Minimal dependencies
-- ✅ In-memory data structures for fast access
-- ✅ Async API endpoints
-- ✅ Lightweight frontend (single HTML file)
-
-### Low Impact: Testing ⭐⭐⭐⭐
-- ✅ Multiple test scenarios documented
-- ✅ Clear expected outputs
-- ✅ Easy to validate functionality
-- ✅ Reproducible on local machine
-
-### Low Impact: Accessibility ⭐⭐⭐⭐
-- ✅ Mobile-responsive design
-- ✅ High contrast colors
-- ✅ Keyboard navigation
-- ✅ Readable fonts and spacing
-
----
-
-## Deployment & Submission
-
-### Pre-Submission Checklist
-
-- [x] Repository is public
-- [x] Single branch only (main)
-- [x] All code files present
-- [x] README complete
-- [x] .gitignore configured
-- [x] Tested locally (all features work)
-- [x] Size < 10MB
-- [x] No API keys in code
-- [x] Can clone and run from scratch
 
 ### To Run From Fresh Clone
 
@@ -533,12 +436,12 @@ https://github.com/VipinT-ZYPH/fifa-2026-genai-navigator
 ## Summary
 
 This solution demonstrates:
-- ✅ **Smart Decision Making**: Context-aware routing based on user needs
-- ✅ **Practical Usability**: Real-world applicable to actual stadium operations
-- ✅ **Clean Code**: Modular, readable, maintainable architecture
-- ✅ **Safety & Efficiency**: Secure, lightweight, fast responses
-- ✅ **Inclusive Design**: Accessible for diverse users and needs
+- **Smart Decision Making**: Context-aware routing based on user needs
+- **Practical Usability**: Real-world applicable to actual stadium operations
+- **Clean Code**: Modular, readable, maintainable architecture
+- **Safety & Efficiency**: Secure, lightweight, fast responses
+- **Inclusive Design**: Accessible for diverse users and needs
 
 The FIFA 2026 Stadium Navigator transforms fan experience through intelligent, accessible, real-time assistance.
 
-🏟️ **Your AI Guide to the Stadium**
+**Your AI Guide to the Stadium**
